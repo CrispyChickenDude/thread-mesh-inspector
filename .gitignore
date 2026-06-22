@@ -1,2 +1,55 @@
+# Session memory
 .remember/logs/
 .remember/tmp/
+
+# Add-on runtime data (SQLite, SSH keys, live config — never commit)
+/data/
+*.db
+*.db-wal
+*.db-shm
+
+# Secrets — must never be committed
+.env
+*.env.*
+secrets.yaml
+ssh_private_key
+id_rsa
+id_ed25519
+*.pem
+
+# Thread credentials — CRITICAL: must not appear in repo
+# (raw dataset active -x output, network key, PSKc)
+*dataset_raw*
+*thread_key*
+
+# Test fixtures containing real data — use redacted/synthetic only
+backend/tests/fixtures/real_*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+dist/
+*.egg-info/
+.venv/
+venv/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp

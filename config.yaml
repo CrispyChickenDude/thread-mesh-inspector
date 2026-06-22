@@ -1,0 +1,46 @@
+name: Thread Mesh Inspector
+description: >-
+  Thread mesh topology visualiser and diagnostics tool. Shows real Thread node
+  topology, link quality, pairing events, and guided diagnostics for
+  Matter-over-Thread devices. Read-only — never modifies your Thread network.
+version: "0.1.0"
+slug: thread_mesh_inspector
+url: https://github.com/alex/thread-mesh-inspector
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+init: false
+
+# HA Supervisor integration — provides SUPERVISOR_TOKEN for device/entity registry
+homeassistant_api: true
+
+# Ingress web UI (sidebar panel)
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:network-outline
+panel_title: Thread Mesh
+
+# Persistent storage for SQLite history database
+map:
+  - data:rw
+
+# Docker socket access is required to exec ot-ctl into the house OTBR container.
+# This disables the Supervisor sandbox for this add-on. See DOCS.md — Security.
+# Set to false if you only use REST or SSH sources (no local docker exec needed).
+protection_mode: false
+
+# Add-on options (simple values — complex source/alias config goes in /data/config.yaml)
+options:
+  poll_interval_seconds: 60
+  live_poll_interval_seconds: 3
+  log_level: info
+  mock_mode: false
+
+schema:
+  poll_interval_seconds: int
+  live_poll_interval_seconds: int
+  log_level: "trace|debug|info|warning|error"
+  mock_mode: bool

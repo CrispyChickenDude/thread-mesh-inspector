@@ -1,0 +1,89 @@
+# Thread Mesh Inspector — example /data/config.yaml
+#
+# Copy this file to your add-on's /data/ folder (via the HA file editor or SSH)
+# and customise for your environment.
+#
+# Safe to commit: this file contains example/template values only.
+# Real IPs below are configurable — replace with yours.
+
+# ─── OTBR data sources ────────────────────────────────────────────────────────
+otbr_sources:
+
+  # House OTBR: HA Supervisor add-on — accessed via docker exec on the HA host.
+  # Requires protection_mode: false in config.yaml (already set).
+  # Command mode options: docker_exec | sudo_docker_exec | sudo_n_docker_exec | custom
+  - name: "House OTBR"
+    type: local_docker
+    container: addon_core_openthread_border_router
+    command_mode: docker_exec
+    # If docker exec is denied, fall back to SSH on the HA SSH add-on:
+    # ssh_fallback:
+    #   host: 192.168.1.2      # <-- replace with your HA host IP
+    #   port: 22222
+    #   user: root
+    #   ssh_key_path: /data/ssh/ha_key
+
+  # Garage OTBR: standalone OTBR container on a separate VM, accessed via SSH.
+  # Needs: SSH key at /data/ssh/garage_key (add-on managed, never committed to git)
+  - name: "Garage OTBR"
+    type: ssh_docker
+    host: 192.168.1.234        # <-- replace with your garage VM IP
+    port: 22
+    user: alex
+    ssh_key_path: /data/ssh/garage_key
+    container: otbr-garage
+    command_mode: sudo_n_docker_exec
+    # REST fallback for identity + dataset when SSH is unavailable:
+    rest_fallback_url: http://192.168.1.234:8081
+
+  # Optional: any OTBR that exposes the REST API on your LAN.
+  # Uncomment and fill in if you have one.
+  # - name: "Optional REST OTBR"
+  #   type: rest
+  #   base_url: http://192.168.1.2:8071
+
+
+# ─── Manual node identity aliases ─────────────────────────────────────────────
+# Map Thread extended MACs (extaddr) to friendly names.
+# This is essential because HA does not always expose Thread MACs for Matter devices.
+#
+# Key: lowercase hex extaddr (16 chars, no colons)
+# Confidence after manual mapping: "low" unless also confirmed by HA registry = "high"
+node_aliases:
+
+  # Examples — replace with your real extaddrs (run: ot-ctl extaddr)
+  "62e24d4b7e30e78c":
+    name: "Environment - Garage [Ambient]"
+    area: "Garage"
+
+  "bea21efee32302ba":
+    name: "Remote - Garage [Lights]"
+    area: "Garage"
+
+  # RLOC16 aliases are temporary — RLOC changes when a device re-attaches.
+  # Use extaddr aliases wherever possible.
+  # rloc16_aliases:
+  #   "0x3c00":
+  #     name: "Unknown device near kitchen"
+  #     note: "Replace with extaddr alias once identified"
+
+  # IPv6 aliases (OMR address → name) for devices whose extaddr you don't know yet:
+  # ipv6_aliases:
+  #   "fd13:810b:b3b3:1::abcd":
+  #     name: "Bedroom sensor (unidentified)"
+
+
+# ─── Reachability checks ───────────────────────────────────────────────────────
+reachability:
+  # ping6 to OMR addresses — unreliable/meaningless for sleepy/ICD devices (clearly labelled)
+  enabled: true
+  timeout_seconds: 2
+  # Never ping these extaddrs (known sleepy/ICD devices)
+  skip_extaddrs: []
+
+
+# ─── History retention ─────────────────────────────────────────────────────────
+history:
+  retention_days: 30
+  # Maximum number of events to keep per node
+  max_events_per_node: 500
