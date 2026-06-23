@@ -135,7 +135,7 @@ export async function renderPairingWatch(container: HTMLElement): Promise<void> 
 
   let watchInterval: ReturnType<typeof setInterval> | null = null;
   let startTime: Date | null = null;
-  let knownExtaddrs = new Set(topo.nodes.map(n => n.extaddr).filter(Boolean));
+  let knownExtaddrs = new Set(topo.nodes.map(n => n.extaddr).filter((x): x is string => Boolean(x)));
 
   function addEvent(text: string, kind: "info" | "success" | "warn" = "info") {
     const row = el("div");

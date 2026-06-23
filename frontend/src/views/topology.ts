@@ -2,7 +2,7 @@
  * Topology view — Cytoscape.js graph of the full Thread mesh.
  * Step 3: full implementation. This file is the scaffold/stub.
  */
-import { api, TopologyData, NodeData, LinkData } from "../api/client.js";
+import { api, TopologyData } from "../api/client.js";
 import { renderNodeDetail } from "../components/node-detail.js";
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLElementTagNameMap[K] {
@@ -120,7 +120,7 @@ export async function renderTopology(container: HTMLElement): Promise<void> {
   }
 
   // Load Cytoscape dynamically
-  let cytoscape: typeof import("cytoscape").default;
+  let cytoscape: (options: cytoscape.CytoscapeOptions) => cytoscape.Core;
   try {
     const mod = await import("cytoscape");
     cytoscape = mod.default;
@@ -192,7 +192,7 @@ export async function renderTopology(container: HTMLElement): Promise<void> {
   });
 
   // Node click → show detail panel
-  cy.on("tap", "node", (evt) => {
+  cy.on("tap", "node", (evt: cytoscape.EventObject) => {
     const extaddr: string = evt.target.data("extaddr");
     if (!extaddr) return;
     const node = topo.nodes.find(n => n.extaddr === extaddr);

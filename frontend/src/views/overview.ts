@@ -162,6 +162,8 @@ export async function renderOverview(container: HTMLElement): Promise<void> {
       cell.style.cssText = "text-align:center;padding:12px;background:var(--secondary-background-color);border-radius:8px";
       const num = el("div");
       num.style.cssText = "font-size:28px;font-weight:700";
+      if (kind === "warn") num.style.color = "var(--warning-color)";
+      else if (kind === "error") num.style.color = "var(--error-color)";
       num.textContent = String(value);
       const lbl = el("div");
       lbl.style.cssText = "font-size:12px;color:var(--secondary-text-color);margin-top:4px";
