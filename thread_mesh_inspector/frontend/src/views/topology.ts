@@ -11,6 +11,11 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls?: string): HTMLEl
   return e;
 }
 
+// fcose is a separate Cytoscape extension; it must be registered via
+// cytoscape.use() before `layout: { name: "fcose" }` can be used. Guard so we
+// only register once even when the view is re-rendered on navigation.
+let fcoseRegistered = false;
+
 /** Map a node role to a colour for the graph. */
 function roleColor(role: string): string {
   const map: Record<string, string> = {
@@ -124,6 +129,12 @@ export async function renderTopology(container: HTMLElement): Promise<void> {
   try {
     const mod = await import("cytoscape");
     cytoscape = mod.default;
+    if (!fcoseRegistered) {
+      // @ts-expect-error — cytoscape-fcose ships no type declarations
+      const fcose = (await import("cytoscape-fcose")).default;
+      mod.default.use(fcose);
+      fcoseRegistered = true;
+    }
   } catch {
     const msg = el("p");
     msg.style.cssText = "padding:24px;color:var(--error-color)";
