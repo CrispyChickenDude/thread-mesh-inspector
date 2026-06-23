@@ -9,9 +9,6 @@ url: https://github.com/CrispyChickenDude/thread-mesh-inspector
 arch:
   - aarch64
   - amd64
-  - armhf
-  - armv7
-  - i386
 init: false
 
 # HA Supervisor integration — provides SUPERVISOR_TOKEN for device/entity registry
@@ -42,5 +39,5 @@ options:
 schema:
   poll_interval_seconds: int
   live_poll_interval_seconds: int
-  log_level: "trace|debug|info|warning|error"
+  log_level: "list(trace|debug|info|warning|error)"
   mock_mode: bool
