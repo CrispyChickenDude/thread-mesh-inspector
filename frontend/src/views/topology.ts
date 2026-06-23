@@ -26,7 +26,7 @@ function roleColor(role: string): string {
 }
 
 /** Build the Cytoscape elements array from topology data. */
-function buildElements(topo: TopologyData): object[] {
+function buildElements(topo: TopologyData): cytoscape.ElementDefinition[] {
   const elements: cytoscape.ElementDefinition[] = [];
 
   for (const node of topo.nodes) {
@@ -163,7 +163,7 @@ export async function renderTopology(container: HTMLElement): Promise<void> {
           width: 36,
           height: 36,
           opacity: "data(opacity)",
-        } as cytoscape.Css.Node,
+        } as unknown as cytoscape.Css.Node,
       },
       {
         selector: "edge",
@@ -178,15 +178,15 @@ export async function renderTopology(container: HTMLElement): Promise<void> {
           "text-background-color": "var(--card-background-color)",
           "text-background-opacity": 0.8,
           "text-background-padding": "2px",
-        } as cytoscape.Css.Edge,
+        } as unknown as cytoscape.Css.Edge,
       },
       {
         selector: "node.border-router",
-        style: { "border-width": 5 } as cytoscape.Css.Node,
+        style: { "border-width": 5 } as unknown as cytoscape.Css.Node,
       },
       {
         selector: "node:selected",
-        style: { "border-color": "#ff6f00", "border-width": 5 } as cytoscape.Css.Node,
+        style: { "border-color": "#ff6f00", "border-width": 5 } as unknown as cytoscape.Css.Node,
       },
     ],
   });
