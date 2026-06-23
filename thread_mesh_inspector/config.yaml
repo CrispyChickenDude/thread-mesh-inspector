@@ -5,7 +5,7 @@ description: >-
   Matter-over-Thread devices. Read-only — never modifies your Thread network.
 version: "0.1.0"
 slug: thread_mesh_inspector
-url: https://github.com/alex/thread-mesh-inspector
+url: https://github.com/CrispyChickenDude/thread-mesh-inspector
 arch:
   - aarch64
   - amd64
