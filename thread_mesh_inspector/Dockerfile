@@ -29,6 +29,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy backend source
 COPY backend/ ./backend/
 
+# Copy add-on metadata so run.sh can report the deployed version accurately
+COPY config.yaml /app/config.yaml
+
 # Copy add-on run script
 COPY run.sh /run.sh
 RUN chmod +x /run.sh
