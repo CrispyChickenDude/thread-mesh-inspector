@@ -85,7 +85,23 @@ export interface TopologyData {
   sources: SourceData[];
 }
 
-const API_BASE = "/api/v1";
+/**
+ * Compute the API base relative to where the SPA is served.
+ *
+ * Under HA ingress the app lives at /api/hassio_ingress/<token>/, so an
+ * absolute "/api/v1" would bypass the ingress token and 404. Deriving the
+ * base from the current path keeps it working both under ingress and at
+ * the site root during local dev.
+ */
+function computeApiBase(): string {
+  let path = window.location.pathname;
+  if (!path.endsWith("/")) {
+    path = path.slice(0, path.lastIndexOf("/") + 1);
+  }
+  return `${path}api/v1`;
+}
+
+const API_BASE = computeApiBase();
 
 async function apiFetch<T>(path: string): Promise<T> {
   const r = await fetch(`${API_BASE}${path}`);

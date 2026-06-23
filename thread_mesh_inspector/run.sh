@@ -6,7 +6,7 @@ LIVE_POLL_INTERVAL=$(bashio::config 'live_poll_interval_seconds')
 LOG_LEVEL=$(bashio::config 'log_level')
 MOCK_MODE=$(bashio::config 'mock_mode')
 
-bashio::log.info "Starting Thread Mesh Inspector v0.1.0"
+bashio::log.info "Starting Thread Mesh Inspector v0.1.2"
 bashio::log.info "Poll interval: ${POLL_INTERVAL}s | Live poll: ${LIVE_POLL_INTERVAL}s | Mock: ${MOCK_MODE}"
 
 # Export for the Python backend
