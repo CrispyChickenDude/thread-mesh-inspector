@@ -1,5 +1,15 @@
 # Thread Mesh Inspector
 
+> ## ⚠️ Deprecated — this project is retired
+>
+> **Matter 9.0 now provides this Thread mesh topology and diagnostics functionality
+> natively**, so there is no longer a reason to maintain a separate add-on. This
+> repository is archived and **no longer developed or supported**. Please use the
+> built-in Matter/Thread tooling instead.
+>
+> The code remains available, read-only, for reference. The last functional release
+> is tagged [`v0.1.4-eol`](../../releases). Issues and PRs are closed.
+
 A polished Home Assistant add-on that visualises your real Thread mesh network, shows
 per-device health, and helps diagnose why Matter-over-Thread devices won't pair, stay
 online, or update.

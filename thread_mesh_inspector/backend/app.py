@@ -202,7 +202,12 @@ def create_app() -> FastAPI:
             """Serve index.html for all non-API routes (SPA routing)."""
             index = FRONTEND_DIST / "index.html"
             if index.exists():
-                return FileResponse(str(index))
+                # index.html must never be cached: it references content-hashed
+                # asset filenames that change every build. If the browser serves
+                # a stale index.html, it loads stale JS and add-on updates appear
+                # to "do nothing" until a manual hard refresh. The hashed /assets
+                # files are themselves immutable, so only this entry needs no-cache.
+                return FileResponse(str(index), headers={"Cache-Control": "no-cache"})
             return {"error": "Frontend not built. Run: cd frontend && npm run build"}
     else:
         logger.warning("Frontend dist not found at %s — serving API only. "
